@@ -18,3 +18,17 @@ class EmailAddress extends ValueObject<String> {
 
   const EmailAddress._({this.value});
 }
+
+class Password extends ValueObject<String> {
+  // values data type can be Either a ValueFailure or a String
+  // the left side of an either is always the fail case
+  final Either<ValueFailure<String>, String> value;
+
+  factory Password(String input) {
+    assert(input != null);
+    // since validateEMailAddress returns a string, this is allowed
+    return Password._(value: validatePassword(input));
+  }
+
+  const Password._({this.value});
+}

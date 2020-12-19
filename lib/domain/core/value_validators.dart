@@ -14,3 +14,13 @@ Either<ValueFailure<String>, String> validateEmailAddress(String input) {
     return left(ValueFailure.invalidEmail(failedValue: input));
   }
 }
+
+Either<ValueFailure<String>, String> validatePassword(String input) {
+  if (input.length >= 6) {
+    // input is valid, email address is correct
+    return right(input);
+  } else {
+    // if input is bad, throw an exception
+    return left(ValueFailure.shortPassword(failedValue: input));
+  }
+}

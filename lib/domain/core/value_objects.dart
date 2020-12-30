@@ -13,6 +13,8 @@ abstract class ValueObject<T> {
   // the left side of an either is always the fail case
   Either<ValueFailure<T>, T> get value;
 
+  bool isValid() => value.isRight();
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

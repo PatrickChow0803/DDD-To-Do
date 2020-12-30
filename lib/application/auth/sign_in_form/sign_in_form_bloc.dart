@@ -13,6 +13,10 @@ part 'sign_in_form_state.dart';
 
 part 'sign_in_form_bloc.freezed.dart';
 
+// logic goes into here
+// The logic performed inside BLoCs is focused on transforming incoming events into states.
+// For example, a raw String will come in from the UI and a validated EmailAddress will come out.
+
 class SignInFormBloc extends Bloc<SignInFormEvent, SignInFormState> {
   final IAuthFacade _authFacade;
 
@@ -22,6 +26,86 @@ class SignInFormBloc extends Bloc<SignInFormEvent, SignInFormState> {
   Stream<SignInFormState> mapEventToState(
     SignInFormEvent event,
   ) async* {
-    // TODO: implement mapEventToState
+    // yield adds a value to the output stream of the surrounding async* function. It's like return, but doesn't terminate the function.
+    // use yield for when you want to change the state's variable
+    yield* event.map(
+      emailChanged: (e) async* {
+        yield state.copyWith(
+          emailAddress: EmailAddress(e.emailString),
+
+          // when the email address changes, it's not correct to associate the old "auth response" with the updated email address.
+          // therefore reset authFailureOrSuccessOption
+          authFailureOrSuccessOption: none(),
+        );
+      },
+      passwordChanged: (e) async* {
+        yield state.copyWith(
+          password: Password(e.passwordString),
+
+          // when the email address changes, it's not correct to associate the old "auth response" with the updated email address.
+          // therefore reset authFailureOrSuccessOption
+          authFailureOrSuccessOption: none(),
+        );
+      },
+      registerWithEmailAndPasswordPressed: (e) async* {
+        Either<AuthFailure, Unit> failureOrSuccess;
+
+        final isEmailValid = state.emailAddress.isValid();
+        final isPasswordValid = state.password.isValid();
+
+        if (isEmailValid && isPasswordValid) {
+          yield state.copyWith(
+            isSubmitting: true,
+            authFailureOrSuccessOption: none(),
+          );
+
+          failureOrSuccess = await _authFacade.registerWithEmailAndPassword(
+            emailAddress: state.emailAddress,
+            password: state.password,
+          );
+        }
+        yield state.copyWith(
+          isSubmitting: false,
+          showErrorMessages: true,
+          // optionOf is equivalent to:
+          // failureOrSuccess == null ? none() : some(failureOrSuccess)
+          authFailureOrSuccessOption: optionOf(failureOrSuccess),
+        );
+      },
+      signInWithEmailAndPasswordPressed: (e) async* {
+        Either<AuthFailure, Unit> failureOrSuccess;
+
+        final isEmailValid = state.emailAddress.isValid();
+        final isPasswordValid = state.password.isValid();
+
+        if (isEmailValid && isPasswordValid) {
+          yield state.copyWith(
+            isSubmitting: true,
+            authFailureOrSuccessOption: none(),
+          );
+
+          failureOrSuccess = await _authFacade.signInWithEmailAndPassword(
+            emailAddress: state.emailAddress,
+            password: state.password,
+          );
+        }
+        yield state.copyWith(
+          isSubmitting: false,
+          showErrorMessages: true,
+          // optionOf is equivalent to:
+          // failureOrSuccess == null ? none() : some(failureOrSuccess)
+          authFailureOrSuccessOption: optionOf(failureOrSuccess),
+        );
+      },
+      signInWithGooglePressed: (e) async* {
+        yield state.copyWith(
+          isSubmitting: true,
+          authFailureOrSuccessOption: none(),
+        );
+        final failureOrSuccess = await _authFacade.signInWithGoogle();
+        yield state.copyWith(
+            isSubmitting: false, authFailureOrSuccessOption: some(failureOrSuccess));
+      },
+    );
   }
 }

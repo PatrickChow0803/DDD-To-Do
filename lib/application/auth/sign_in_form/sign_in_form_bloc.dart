@@ -48,53 +48,13 @@ class SignInFormBloc extends Bloc<SignInFormEvent, SignInFormState> {
         );
       },
       registerWithEmailAndPasswordPressed: (e) async* {
-        Either<AuthFailure, Unit> failureOrSuccess;
-
-        final isEmailValid = state.emailAddress.isValid();
-        final isPasswordValid = state.password.isValid();
-
-        if (isEmailValid && isPasswordValid) {
-          yield state.copyWith(
-            isSubmitting: true,
-            authFailureOrSuccessOption: none(),
-          );
-
-          failureOrSuccess = await _authFacade.registerWithEmailAndPassword(
-            emailAddress: state.emailAddress,
-            password: state.password,
-          );
-        }
-        yield state.copyWith(
-          isSubmitting: false,
-          showErrorMessages: true,
-          // optionOf is equivalent to:
-          // failureOrSuccess == null ? none() : some(failureOrSuccess)
-          authFailureOrSuccessOption: optionOf(failureOrSuccess),
+        yield* _performActionOnAuthFacadeWithEmailAndPassword(
+          _authFacade.registerWithEmailAndPassword,
         );
       },
       signInWithEmailAndPasswordPressed: (e) async* {
-        Either<AuthFailure, Unit> failureOrSuccess;
-
-        final isEmailValid = state.emailAddress.isValid();
-        final isPasswordValid = state.password.isValid();
-
-        if (isEmailValid && isPasswordValid) {
-          yield state.copyWith(
-            isSubmitting: true,
-            authFailureOrSuccessOption: none(),
-          );
-
-          failureOrSuccess = await _authFacade.signInWithEmailAndPassword(
-            emailAddress: state.emailAddress,
-            password: state.password,
-          );
-        }
-        yield state.copyWith(
-          isSubmitting: false,
-          showErrorMessages: true,
-          // optionOf is equivalent to:
-          // failureOrSuccess == null ? none() : some(failureOrSuccess)
-          authFailureOrSuccessOption: optionOf(failureOrSuccess),
+        yield* _performActionOnAuthFacadeWithEmailAndPassword(
+          _authFacade.signInWithEmailAndPassword,
         );
       },
       signInWithGooglePressed: (e) async* {
@@ -106,6 +66,36 @@ class SignInFormBloc extends Bloc<SignInFormEvent, SignInFormState> {
         yield state.copyWith(
             isSubmitting: false, authFailureOrSuccessOption: some(failureOrSuccess));
       },
+    );
+  }
+
+  Stream<SignInFormState> _performActionOnAuthFacadeWithEmailAndPassword(
+    Future<Either<AuthFailure, Unit>> Function({
+      @required EmailAddress emailAddress,
+      @required Password password,
+    }) // the function that was passed in
+        forwardedCall,
+  ) async* {
+    Either<AuthFailure, Unit> failureOrSuccess;
+
+    final isEmailValid = state.emailAddress.isValid();
+    final isPasswordValid = state.password.isValid();
+
+    if (isEmailValid && isPasswordValid) {
+      yield state.copyWith(
+        isSubmitting: true,
+        authFailureOrSuccessOption: none(),
+      );
+
+      failureOrSuccess = await forwardedCall(
+        emailAddress: state.emailAddress,
+        password: state.password,
+      );
+    }
+    yield state.copyWith(
+      isSubmitting: false,
+      showErrorMessages: true,
+      authFailureOrSuccessOption: optionOf(failureOrSuccess),
     );
   }
 }

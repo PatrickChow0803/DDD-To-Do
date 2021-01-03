@@ -810,7 +810,8 @@ const $SignInFormState = _$SignInFormStateTearOff();
 mixin _$SignInFormState {
   EmailAddress get emailAddress;
   Password get password;
-  bool get showErrorMessages;
+  bool
+      get showErrorMessages; // used to determine if to display loading ui or not
   bool get isSubmitting;
   Option<Either<AuthFailure, Unit>> get authFailureOrSuccessOption;
 
@@ -935,7 +936,7 @@ class _$_SignInFormState implements _SignInFormState {
   final Password password;
   @override
   final bool showErrorMessages;
-  @override
+  @override // used to determine if to display loading ui or not
   final bool isSubmitting;
   @override
   final Option<Either<AuthFailure, Unit>> authFailureOrSuccessOption;
@@ -1002,7 +1003,7 @@ abstract class _SignInFormState implements SignInFormState {
   Password get password;
   @override
   bool get showErrorMessages;
-  @override
+  @override // used to determine if to display loading ui or not
   bool get isSubmitting;
   @override
   Option<Either<AuthFailure, Unit>> get authFailureOrSuccessOption;

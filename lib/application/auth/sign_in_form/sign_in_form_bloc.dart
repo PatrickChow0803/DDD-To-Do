@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ddd_to_do/domain/auth/auth_failure.dart';
 import 'package:ddd_to_do/domain/auth/i_auth_facade.dart';
 import 'package:ddd_to_do/domain/auth/value_objects.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -17,6 +18,8 @@ part 'sign_in_form_bloc.freezed.dart';
 // The logic performed inside BLoCs is focused on transforming incoming events into states.
 // For example, a raw String will come in from the UI and a validated EmailAddress will come out.
 
+// since this is expecting an IAuthFacade instance, make this injectable
+@injectable
 class SignInFormBloc extends Bloc<SignInFormEvent, SignInFormState> {
   final IAuthFacade _authFacade;
 

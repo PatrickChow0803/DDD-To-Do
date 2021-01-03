@@ -1,6 +1,10 @@
+import 'package:ddd_to_do/injection.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
 void main() {
+  // This invokes the generated initGetIt
+  configureInjection(Environment.prod);
   runApp(MyApp());
 }
 

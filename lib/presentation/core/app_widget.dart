@@ -6,8 +6,14 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Material App',
+      title: 'Notes',
+      debugShowCheckedModeBanner: false,
       home: SignInPage(),
+      theme: ThemeData.dark().copyWith(
+          primaryColor: Colors.teal[800],
+          // this creates the border around TextInputFields. Ex: The email and password
+          inputDecorationTheme: InputDecorationTheme(
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)))),
     );
   }
 }

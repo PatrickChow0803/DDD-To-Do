@@ -38,10 +38,8 @@ class _$SignInFormEventTearOff {
   }
 
 // ignore: unused_element
-  SignInWithGooglePressed signInWithGooglePressed(String passwordString) {
-    return SignInWithGooglePressed(
-      passwordString,
-    );
+  SignInWithGooglePressed signInWithGooglePressed() {
+    return const SignInWithGooglePressed();
   }
 }
 
@@ -57,7 +55,7 @@ mixin _$SignInFormEvent {
     @required TResult passwordChanged(String passwordString),
     @required TResult registerWithEmailAndPasswordPressed(),
     @required TResult signInWithEmailAndPasswordPressed(),
-    @required TResult signInWithGooglePressed(String passwordString),
+    @required TResult signInWithGooglePressed(),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
@@ -65,7 +63,7 @@ mixin _$SignInFormEvent {
     TResult passwordChanged(String passwordString),
     TResult registerWithEmailAndPasswordPressed(),
     TResult signInWithEmailAndPasswordPressed(),
-    TResult signInWithGooglePressed(String passwordString),
+    TResult signInWithGooglePressed(),
     @required TResult orElse(),
   });
   @optionalTypeArgs
@@ -175,7 +173,7 @@ class _$EmailChanged implements EmailChanged {
     @required TResult passwordChanged(String passwordString),
     @required TResult registerWithEmailAndPasswordPressed(),
     @required TResult signInWithEmailAndPasswordPressed(),
-    @required TResult signInWithGooglePressed(String passwordString),
+    @required TResult signInWithGooglePressed(),
   }) {
     assert(emailChanged != null);
     assert(passwordChanged != null);
@@ -192,7 +190,7 @@ class _$EmailChanged implements EmailChanged {
     TResult passwordChanged(String passwordString),
     TResult registerWithEmailAndPasswordPressed(),
     TResult signInWithEmailAndPasswordPressed(),
-    TResult signInWithGooglePressed(String passwordString),
+    TResult signInWithGooglePressed(),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -318,7 +316,7 @@ class _$PasswordChanged implements PasswordChanged {
     @required TResult passwordChanged(String passwordString),
     @required TResult registerWithEmailAndPasswordPressed(),
     @required TResult signInWithEmailAndPasswordPressed(),
-    @required TResult signInWithGooglePressed(String passwordString),
+    @required TResult signInWithGooglePressed(),
   }) {
     assert(emailChanged != null);
     assert(passwordChanged != null);
@@ -335,7 +333,7 @@ class _$PasswordChanged implements PasswordChanged {
     TResult passwordChanged(String passwordString),
     TResult registerWithEmailAndPasswordPressed(),
     TResult signInWithEmailAndPasswordPressed(),
-    TResult signInWithGooglePressed(String passwordString),
+    TResult signInWithGooglePressed(),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -441,7 +439,7 @@ class _$RegisterWithEmailAndPasswordPressed
     @required TResult passwordChanged(String passwordString),
     @required TResult registerWithEmailAndPasswordPressed(),
     @required TResult signInWithEmailAndPasswordPressed(),
-    @required TResult signInWithGooglePressed(String passwordString),
+    @required TResult signInWithGooglePressed(),
   }) {
     assert(emailChanged != null);
     assert(passwordChanged != null);
@@ -458,7 +456,7 @@ class _$RegisterWithEmailAndPasswordPressed
     TResult passwordChanged(String passwordString),
     TResult registerWithEmailAndPasswordPressed(),
     TResult signInWithEmailAndPasswordPressed(),
-    TResult signInWithGooglePressed(String passwordString),
+    TResult signInWithGooglePressed(),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -562,7 +560,7 @@ class _$SignInWithEmailAndPasswordPressed
     @required TResult passwordChanged(String passwordString),
     @required TResult registerWithEmailAndPasswordPressed(),
     @required TResult signInWithEmailAndPasswordPressed(),
-    @required TResult signInWithGooglePressed(String passwordString),
+    @required TResult signInWithGooglePressed(),
   }) {
     assert(emailChanged != null);
     assert(passwordChanged != null);
@@ -579,7 +577,7 @@ class _$SignInWithEmailAndPasswordPressed
     TResult passwordChanged(String passwordString),
     TResult registerWithEmailAndPasswordPressed(),
     TResult signInWithEmailAndPasswordPressed(),
-    TResult signInWithGooglePressed(String passwordString),
+    TResult signInWithGooglePressed(),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -640,7 +638,6 @@ abstract class $SignInWithGooglePressedCopyWith<$Res> {
   factory $SignInWithGooglePressedCopyWith(SignInWithGooglePressed value,
           $Res Function(SignInWithGooglePressed) then) =
       _$SignInWithGooglePressedCopyWithImpl<$Res>;
-  $Res call({String passwordString});
 }
 
 /// @nodoc
@@ -653,50 +650,24 @@ class _$SignInWithGooglePressedCopyWithImpl<$Res>
 
   @override
   SignInWithGooglePressed get _value => super._value as SignInWithGooglePressed;
-
-  @override
-  $Res call({
-    Object passwordString = freezed,
-  }) {
-    return _then(SignInWithGooglePressed(
-      passwordString == freezed
-          ? _value.passwordString
-          : passwordString as String,
-    ));
-  }
 }
 
 /// @nodoc
 class _$SignInWithGooglePressed implements SignInWithGooglePressed {
-  const _$SignInWithGooglePressed(this.passwordString)
-      : assert(passwordString != null);
-
-  @override
-  final String passwordString;
+  const _$SignInWithGooglePressed();
 
   @override
   String toString() {
-    return 'SignInFormEvent.signInWithGooglePressed(passwordString: $passwordString)';
+    return 'SignInFormEvent.signInWithGooglePressed()';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is SignInWithGooglePressed &&
-            (identical(other.passwordString, passwordString) ||
-                const DeepCollectionEquality()
-                    .equals(other.passwordString, passwordString)));
+    return identical(this, other) || (other is SignInWithGooglePressed);
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(passwordString);
-
-  @override
-  $SignInWithGooglePressedCopyWith<SignInWithGooglePressed> get copyWith =>
-      _$SignInWithGooglePressedCopyWithImpl<SignInWithGooglePressed>(
-          this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
@@ -705,14 +676,14 @@ class _$SignInWithGooglePressed implements SignInWithGooglePressed {
     @required TResult passwordChanged(String passwordString),
     @required TResult registerWithEmailAndPasswordPressed(),
     @required TResult signInWithEmailAndPasswordPressed(),
-    @required TResult signInWithGooglePressed(String passwordString),
+    @required TResult signInWithGooglePressed(),
   }) {
     assert(emailChanged != null);
     assert(passwordChanged != null);
     assert(registerWithEmailAndPasswordPressed != null);
     assert(signInWithEmailAndPasswordPressed != null);
     assert(signInWithGooglePressed != null);
-    return signInWithGooglePressed(passwordString);
+    return signInWithGooglePressed();
   }
 
   @override
@@ -722,12 +693,12 @@ class _$SignInWithGooglePressed implements SignInWithGooglePressed {
     TResult passwordChanged(String passwordString),
     TResult registerWithEmailAndPasswordPressed(),
     TResult signInWithEmailAndPasswordPressed(),
-    TResult signInWithGooglePressed(String passwordString),
+    TResult signInWithGooglePressed(),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (signInWithGooglePressed != null) {
-      return signInWithGooglePressed(passwordString);
+      return signInWithGooglePressed();
     }
     return orElse();
   }
@@ -774,11 +745,7 @@ class _$SignInWithGooglePressed implements SignInWithGooglePressed {
 }
 
 abstract class SignInWithGooglePressed implements SignInFormEvent {
-  const factory SignInWithGooglePressed(String passwordString) =
-      _$SignInWithGooglePressed;
-
-  String get passwordString;
-  $SignInWithGooglePressedCopyWith<SignInWithGooglePressed> get copyWith;
+  const factory SignInWithGooglePressed() = _$SignInWithGooglePressed;
 }
 
 /// @nodoc

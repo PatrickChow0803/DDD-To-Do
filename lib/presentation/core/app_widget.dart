@@ -13,14 +13,16 @@ class AppWidget extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+            // initializes the auth check with the add
             create: (context) => getIt<AuthBloc>()..add(const AuthEvent.authCheckRequested()))
       ],
       child: MaterialApp(
         title: 'Notes',
         debugShowCheckedModeBanner: false,
         // home: SignInPage(),
+        // overrides the default navigator with the ExtendedNavigator
         builder: ExtendedNavigator(
-          router: MyRouter(),
+          router: AutoRoute(),
         ),
         theme: ThemeData.dark().copyWith(
             primaryColor: Colors.teal[800],

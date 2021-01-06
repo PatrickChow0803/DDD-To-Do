@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:ddd_to_do/domain/auth/auth_failure.dart';
+import 'package:ddd_to_do/domain/auth/user.dart';
 import 'package:ddd_to_do/domain/auth/value_objects.dart';
 import 'package:flutter/foundation.dart';
 
@@ -10,6 +11,9 @@ import 'package:flutter/foundation.dart';
 // therefore this interface file should be here. This interface MUST be fulfilled, whether it's from Firebase or RestApi
 // This interface allows us to implement the application logic without any FirebaseAuth dependencies!!!
 abstract class IAuthFacade {
+  // Option Type is basically a non-nullable type which can either hold none or some user
+  Future<Option<UniqueUser>> getSignedInUser();
+
   // Use Unit here instead of void. This is because Unit is an actual class
   // whereas void is just a keyword !!!
   Future<Either<AuthFailure, Unit>> registerWithEmailAndPassword({
@@ -21,4 +25,5 @@ abstract class IAuthFacade {
     @required Password password,
   });
   Future<Either<AuthFailure, Unit>> signInWithGoogle();
+  Future<void> signOut();
 }

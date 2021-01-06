@@ -38,6 +38,7 @@ dependencies:
   injectable: ^1.0.7
   lint: ^1.5.1
   flushbar: ^1.10.4
+  uuid: ^2.2.2
 
 dev_dependencies:
   build_runner:

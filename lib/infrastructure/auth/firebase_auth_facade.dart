@@ -1,12 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:ddd_to_do/domain/auth/auth_failure.dart';
 import 'package:ddd_to_do/domain/auth/i_auth_facade.dart';
+import 'package:ddd_to_do/domain/auth/user.dart';
 import 'package:ddd_to_do/domain/auth/value_objects.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
+import '../auth/firebase_user_mapper.dart';
 
 // because IAuthFacade is just an interface, i want to tell the compiler that what I want
 // is the actual concrete implementation. Look at injection.config.dart for reference
@@ -16,6 +18,14 @@ class FirebaseAuthFacade implements IAuthFacade {
   final GoogleSignIn _googleSignIn;
 
   FirebaseAuthFacade(this._firebaseAuth, this._googleSignIn);
+
+  @override
+  Future<Option<UniqueUser>> getSignedInUser() async {
+    final User user = _firebaseAuth.currentUser;
+    // converts the user from firebase to my own personal UniqueUser object
+    // optionOf makes it a type of Option
+    return optionOf(user?.toDomain());
+  }
 
   @override
   Future<Either<AuthFailure, Unit>> registerWithEmailAndPassword({
@@ -83,4 +93,14 @@ class FirebaseAuthFacade implements IAuthFacade {
       return left(const AuthFailure.serverError());
     }
   }
+
+  // this is essentially the same as just doing
+  // await _firebaseAuth.signOut()
+  // await _googleSignIn.signOut()
+
+  @override
+  Future<void> signOut() => Future.wait([
+        _firebaseAuth.signOut(),
+        _googleSignIn.signOut(),
+      ]);
 }

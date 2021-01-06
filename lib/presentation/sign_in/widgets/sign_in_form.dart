@@ -31,6 +31,7 @@ class SignInForm extends StatelessWidget {
           autovalidateMode:
               state.showErrorMessages ? AutovalidateMode.always : AutovalidateMode.disabled,
           child: ListView(
+            padding: const EdgeInsets.all(8.0),
             children: [
               const Icon(
                 Icons.sticky_note_2,
@@ -121,6 +122,11 @@ class SignInForm extends StatelessWidget {
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
+              // display a list of widgets if the statement is true
+              if (state.isSubmitting) ...[
+                const SizedBox(height: 8.0),
+                const LinearProgressIndicator(),
+              ]
             ],
           ),
         );

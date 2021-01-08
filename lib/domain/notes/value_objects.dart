@@ -16,7 +16,7 @@ class NoteBody extends ValueObject<String> {
   factory NoteBody(String input) {
     assert(input != null);
     return NoteBody._(
-      // use the method to validate the input. If it's okay, the method returns back the input
+      // use the validateMaxStringLength method to validate the input. If it's okay, the method returns back the input
       // if the value is left (failure), then flatMap knows to skip the code that it's ordered to do
       validateMaxStringLength(input, maxLength).flatMap(validateStringNotEmpty),
     );

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:ddd_to_do/domain/notes/note.dart';
 import 'package:ddd_to_do/domain/notes/note_failure.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,7 +13,7 @@ part 'note_watcher_state.dart';
 
 part 'note_watcher_bloc.freezed.dart';
 
-// Note Watcher is for interacting with Firestore
+// Note Watcher is only for loading the notes from FireStore
 
 class NoteWatcherBloc extends Bloc<NoteWatcherEvent, NoteWatcherState> {
   NoteWatcherBloc() : super(const NoteWatcherState.initial());

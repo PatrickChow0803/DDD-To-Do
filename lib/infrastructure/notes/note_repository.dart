@@ -135,8 +135,31 @@ class NoteRepository implements INoteRepository {
   }
 
   @override
-  Future<Either<NoteFailure, Unit>> delete(Note note) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<Either<NoteFailure, Unit>> delete(Note note) async {
+    try {
+      final userDoc = await _firestore.userDocument();
+
+      // getOrCrash gets the String representation of UniqueId
+      final noteId = note.id.getOrCrash();
+
+      // use .set instead of .add here because if we were to use .add,
+      // Firebase would automatically generate an ID for the document.
+      // But we're already generating an ID in the app, so therefore use the .set property
+      // if no document exists, firebase creates the new document automatically.
+      // if the document does exists, just update the values
+      // since .set is an async operation, use await here
+      await userDoc.noteCollection.doc(noteId).delete();
+
+      // if nothing went wrong, return right(unit)
+      return right(unit);
+    } on FirebaseException catch (e) {
+      if (e.message.contains('PERMISSION_DENIED')) {
+        return left(const NoteFailure.insufficientPermission());
+      } else if (e.message.contains('NOT_FOUND')) {
+        return left(const NoteFailure.unableToUpdate());
+      } else {
+        return left(const NoteFailure.unexpected());
+      }
+    }
   }
 }

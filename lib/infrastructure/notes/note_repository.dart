@@ -109,7 +109,30 @@ class NoteRepository implements INoteRepository {
   }
 
   @override
-  Future<Either<NoteFailure, Unit>> update(Note note) async {}
+  Future<Either<NoteFailure, Unit>> update(Note note) async {
+    try {
+      final userDoc = await _firestore.userDocument();
+
+      // convert the note entity to a data transfer object
+      final noteDto = NoteDto.fromDomain(note);
+
+      // use update here since I'd only want the values passed in to be updated.
+      // If I were to use set instead, then the entire document would be rewritten.
+      // since .update is an async operation, use await here
+      await userDoc.noteCollection.doc(noteDto.id).update(noteDto.toJson());
+
+      // if nothing went wrong, return right(unit)
+      return right(unit);
+    } on FirebaseException catch (e) {
+      if (e.message.contains('PERMISSION_DENIED')) {
+        return left(const NoteFailure.insufficientPermission());
+      } else if (e.message.contains('NOT_FOUND')) {
+        return left(const NoteFailure.unableToUpdate());
+      } else {
+        return left(const NoteFailure.unexpected());
+      }
+    }
+  }
 
   @override
   Future<Either<NoteFailure, Unit>> delete(Note note) {

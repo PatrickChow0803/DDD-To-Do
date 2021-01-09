@@ -3,6 +3,7 @@ part of 'note_form_bloc.dart';
 @freezed
 abstract class NoteFormEvent with _$NoteFormEvent {
   // Option means nullable. It can be null or nonnull.
+  // initialized means if the note already exists or not.
   const factory NoteFormEvent.initialized(Option<Note> initialNoteOption) = _Initialized;
   // this is the note body
   const factory NoteFormEvent.bodyChanged(String bodyStr) = _BodyChanged;

@@ -7,6 +7,7 @@ abstract class NoteFormState with _$NoteFormState {
     @required bool showErrorMessages,
     // tells the repository whether to create a new note or to edit an existing note
     @required bool isEditing,
+    // whether or not to display a loading indicator
     @required bool isSaving,
     @required Option<Either<NoteFailure, Unit>> saveFailureOrSuccessOption,
   }) = _NoteFormState;

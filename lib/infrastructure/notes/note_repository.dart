@@ -49,8 +49,35 @@ class NoteRepository implements INoteRepository {
     });
   }
 
+  // Display a list of notes where the note hasn't finished all of their todos
   @override
-  Stream<Either<NoteFailure, KtList<Note>>> watchUncompleted() async* {}
+  Stream<Either<NoteFailure, KtList<Note>>> watchUncompleted() async* {
+    final userDoc = await _firestore.userDocument();
+    yield* userDoc.noteCollection
+        .orderBy('serverTimeStamp', descending: true)
+        .snapshots()
+        // maps snapshots to note entities
+        .map(
+          (snapshot) => snapshot.docs.map((doc) => NoteDto.fromFirestore(doc).toDomain()),
+        )
+        // using the map's notes iterable, create a KtList of notes
+        .map(
+          (notes) => right<NoteFailure, KtList<Note>>(
+            notes
+                // return the notes where any of their todoItem isn't done
+                .where((note) => note.todos.getOrCrash().any((todoItem) => !todoItem.done))
+                .toImmutableList(),
+          ),
+        )
+        .onErrorReturnWith((error) {
+      if (error is FirebaseException && error.message.contains('PERMISSION_DENIED')) {
+        return left(const NoteFailure.insufficientPermission());
+      } else {
+        // log.error(e.toString());
+        return left(const NoteFailure.unexpected());
+      }
+    });
+  }
 
   @override
   Future<Either<NoteFailure, Unit>> create(Note note) {

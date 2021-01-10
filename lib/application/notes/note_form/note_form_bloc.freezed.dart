@@ -776,8 +776,9 @@ const $NoteFormState = _$NoteFormStateTearOff();
 /// @nodoc
 mixin _$NoteFormState {
   Note get note;
-  bool get showErrorMessages;
-  bool get isEditing;
+  bool
+      get showErrorMessages; // tells the repository whether to create a new note or to edit an existing note
+  bool get isEditing; // whether or not to display a loading indicator
   bool get isSaving;
   Option<Either<NoteFailure, Unit>> get saveFailureOrSuccessOption;
 
@@ -909,9 +910,9 @@ class _$_NoteFormState implements _NoteFormState {
   final Note note;
   @override
   final bool showErrorMessages;
-  @override
+  @override // tells the repository whether to create a new note or to edit an existing note
   final bool isEditing;
-  @override
+  @override // whether or not to display a loading indicator
   final bool isSaving;
   @override
   final Option<Either<NoteFailure, Unit>> saveFailureOrSuccessOption;
@@ -975,9 +976,9 @@ abstract class _NoteFormState implements NoteFormState {
   Note get note;
   @override
   bool get showErrorMessages;
-  @override
+  @override // tells the repository whether to create a new note or to edit an existing note
   bool get isEditing;
-  @override
+  @override // whether or not to display a loading indicator
   bool get isSaving;
   @override
   Option<Either<NoteFailure, Unit>> get saveFailureOrSuccessOption;

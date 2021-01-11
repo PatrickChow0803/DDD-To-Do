@@ -1,4 +1,5 @@
 import 'package:ddd_to_do/application/notes/note_watcher/note_watcher_bloc.dart';
+import 'package:ddd_to_do/presentation/notes/notes_overview/widgets/error_note_card_widget.dart';
 import 'package:ddd_to_do/presentation/notes/notes_overview/widgets/note_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,11 +26,7 @@ class NotesOverviewBody extends StatelessWidget {
                 final note = state.notes[index];
                 // if there's an error, display a container to signal a problem
                 if (note.failureOption.isSome()) {
-                  return Container(
-                    color: Colors.red,
-                    width: 100,
-                    height: 100,
-                  );
+                  return ErrorNoteCard(note: note);
                   // else just display a regular container to show everything went well
                 } else {
                   return NoteCard(note: note);

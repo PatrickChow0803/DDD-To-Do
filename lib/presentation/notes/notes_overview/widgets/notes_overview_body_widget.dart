@@ -1,4 +1,5 @@
 import 'package:ddd_to_do/application/notes/note_watcher/note_watcher_bloc.dart';
+import 'package:ddd_to_do/presentation/notes/notes_overview/widgets/note_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,11 +32,7 @@ class NotesOverviewBody extends StatelessWidget {
                   );
                   // else just display a regular container to show everything went well
                 } else {
-                  return Container(
-                    color: Colors.green,
-                    width: 100,
-                    height: 100,
-                  );
+                  return NoteCard(note: note);
                 }
               },
               itemCount: state.notes.size,
@@ -43,6 +40,7 @@ class NotesOverviewBody extends StatelessWidget {
           },
           // failure in getting ALL of the notes
           loadFailure: (state) {
+            print(state.toString());
             return Container(
               color: Colors.yellow,
               width: 200,

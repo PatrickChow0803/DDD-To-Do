@@ -24,15 +24,22 @@ class NoteFormPage extends StatelessWidget {
       create: (context) =>
           // optionOf - if editedNote is null, pass in none. if it isn't null, pass in some editedNote.
           getIt<NoteFormBloc>()..add(NoteFormEvent.initialized(optionOf(editedNote))),
+      // use a BlocListener if you don't need the state or context
+      // BLocConsumer if you DO need the state or context
       child: BlocConsumer<NoteFormBloc, NoteFormState>(
+        // Only have FlushbarHelper appear when .saveFailureOrSuccessOption changes
         listenWhen: (p, c) => p.saveFailureOrSuccessOption != c.saveFailureOrSuccessOption,
         listener: (context, state) {
+          // use fold to get rid of the option
+          // if none, do nothing
+          // if some, do something with the either data type
           state.saveFailureOrSuccessOption.fold(
             () {},
             (either) {
               either.fold(
                 (failure) {
                   FlushbarHelper.createError(
+                    // map different NoteFailures to return a string to display to the ui
                     message: failure.map(
                       insufficientPermission: (_) => 'Insufficient permissions ❌',
                       unableToUpdate: (_) =>
@@ -50,14 +57,59 @@ class NoteFormPage extends StatelessWidget {
             },
           );
         },
+        // only rebuild the builder when the user is saving
         buildWhen: (p, c) => p.isSaving != c.isSaving,
         builder: (context, state) {
+          // stack here so that the SavingInProgressOverlay displays above the Note Form
           return Stack(
             children: <Widget>[
               const NoteFormPageScaffold(),
+              SavingInProgressOverlay(isSaving: state.isSaving)
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+class SavingInProgressOverlay extends StatelessWidget {
+  // bool is used to determine if the SavingInProgressOverlay should be shown or not
+  final bool isSaving;
+
+  const SavingInProgressOverlay({
+    Key key,
+    @required this.isSaving,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // IgnorePointer makes it so that the background of the stack is clickable depending on the ignoring: value
+    return IgnorePointer(
+      ignoring: !isSaving,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        color: isSaving ? Colors.black.withOpacity(0.8) : Colors.transparent,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        // visibility determines whether or not to display the child widget
+        child: Visibility(
+          visible: isSaving,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const CircularProgressIndicator(),
+              const SizedBox(height: 8),
+              Text(
+                'Saving',
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

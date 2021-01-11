@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:ddd_to_do/application/notes/note_actor/note_actor_bloc.dart';
 import 'package:ddd_to_do/domain/notes/note.dart';
 import 'package:ddd_to_do/domain/notes/todo_item.dart';
+import 'package:ddd_to_do/presentation/routes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kt_dart/collection.dart';
@@ -19,7 +21,11 @@ class NoteCard extends StatelessWidget {
       color: note.color.getOrCrash(),
       child: InkWell(
         onTap: () {
-          // TODO: Implement navigation
+          // pass in the note here to signify that an existing note is being edited.
+          // Make sure to import
+          // import 'package:ddd_to_do/presentation/routes/router.gr.dart';
+          // to be able to use .pushNoteFormPage
+          ExtendedNavigator.of(context).pushNoteFormPage(editedNote: note);
         },
         onLongPress: () {
           final noteActorBloc = context.read<NoteActorBloc>();

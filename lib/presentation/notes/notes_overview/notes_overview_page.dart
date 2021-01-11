@@ -35,7 +35,7 @@ class NotesOverviewPage extends StatelessWidget {
               // because I'm only interested in the unauthenticated state, use .maybeMap here instead of .map
               // maybeMap makes it so that you can ignore particular union cases
               state.maybeMap(
-                unauthenticated: (_) => ExtendedNavigator.of(context).push(Routes.signInPage),
+                unauthenticated: (_) => ExtendedNavigator.of(context).replace(Routes.signInPage),
                 // this is called for the other states besides unauthenticated
                 orElse: () {},
               );
@@ -83,7 +83,9 @@ class NotesOverviewPage extends StatelessWidget {
           body: NotesOverviewBody(),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              // TODO: Navigate to NoteFormPage
+              // pass in null here to signify that a new note is being created.
+              // We're NOT editing a note if this FAB is clicked.
+              ExtendedNavigator.of(context).pushNoteFormPage(editedNote: null);
             },
             child: const Icon(Icons.add),
           ),

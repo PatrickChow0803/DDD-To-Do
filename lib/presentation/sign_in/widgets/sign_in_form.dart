@@ -29,7 +29,7 @@ class SignInForm extends StatelessWidget {
           },
               // if the user signed in successfully, move to notes_overview
               (_) {
-            ExtendedNavigator.of(context).push(Routes.notesOverviewPage);
+            ExtendedNavigator.of(context).replace(Routes.notesOverviewPage);
             // change the auth state of our app
             context.read<AuthBloc>().add(const AuthEvent.authCheckRequested());
           }),

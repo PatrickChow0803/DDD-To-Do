@@ -1,4 +1,5 @@
 import 'package:ddd_to_do/application/notes/note_watcher/note_watcher_bloc.dart';
+import 'package:ddd_to_do/presentation/notes/notes_overview/widgets/critical_failure_display_widget.dart';
 import 'package:ddd_to_do/presentation/notes/notes_overview/widgets/error_note_card_widget.dart';
 import 'package:ddd_to_do/presentation/notes/notes_overview/widgets/note_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class NotesOverviewBody extends StatelessWidget {
                 // state.notes contains the list of notes
                 final note = state.notes[index];
                 // if there's an error, display a container to signal a problem
+                // this can occur if a todoItem has no text in it for example
                 if (note.failureOption.isSome()) {
                   return ErrorNoteCard(note: note);
                   // else just display a regular container to show everything went well
@@ -36,13 +38,10 @@ class NotesOverviewBody extends StatelessWidget {
             );
           },
           // failure in getting ALL of the notes
+          // this can occur if you're viewing someone's else's notes that you don't have permission to
           loadFailure: (state) {
             print(state.toString());
-            return Container(
-              color: Colors.yellow,
-              width: 200,
-              height: 200,
-            );
+            return CriticalFailureDisplay(failure: state.noteFailure);
           },
         );
       },

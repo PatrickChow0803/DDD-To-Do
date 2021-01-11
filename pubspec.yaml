@@ -47,6 +47,8 @@ dependencies:
   # RxDart adds additional capabilities to Dart Streams and StreamControllers.
   # In my case, I use .onErrorReturnWith method in the note repository
   rxdart: ^0.25.0
+  # To create similar functionality of a stateful widget with less boilerplate code
+  flutter_hooks: ^0.15.0
 
 dev_dependencies:
   build_runner:

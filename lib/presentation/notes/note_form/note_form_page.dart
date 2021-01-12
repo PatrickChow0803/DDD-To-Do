@@ -4,6 +4,7 @@ import 'package:ddd_to_do/application/notes/note_form/note_form_bloc.dart';
 import 'package:ddd_to_do/domain/notes/note.dart';
 import 'package:ddd_to_do/injection.dart';
 import 'package:ddd_to_do/presentation/notes/note_form/widgets/body_field_widget.dart';
+import 'package:ddd_to_do/presentation/notes/note_form/widgets/color_field_widget.dart';
 import 'package:ddd_to_do/presentation/routes/router.gr.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
@@ -155,8 +156,9 @@ class NoteFormPageScaffold extends StatelessWidget {
                 state.showErrorMessages ? AutovalidateMode.always : AutovalidateMode.disabled,
             child: SingleChildScrollView(
               child: Column(
-                children: [
-                  const BodyField(),
+                children: const [
+                  BodyField(),
+                  ColorField(),
                 ],
               ),
             ),

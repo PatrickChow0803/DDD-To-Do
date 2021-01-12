@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ddd_to_do/application/notes/note_form/note_form_bloc.dart';
 import 'package:ddd_to_do/domain/notes/note.dart';
 import 'package:ddd_to_do/injection.dart';
+import 'package:ddd_to_do/presentation/notes/note_form/widgets/body_field_widget.dart';
 import 'package:ddd_to_do/presentation/routes/router.gr.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
@@ -144,6 +145,23 @@ class NoteFormPageScaffold extends StatelessWidget {
             },
           )
         ],
+      ),
+      // BlocBuilder is used to determine when to show error messages
+      body: BlocBuilder<NoteFormBloc, NoteFormState>(
+        buildWhen: (p, c) => p.showErrorMessages != c.showErrorMessages,
+        builder: (context, state) {
+          return Form(
+            autovalidateMode:
+                state.showErrorMessages ? AutovalidateMode.always : AutovalidateMode.disabled,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const BodyField(),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

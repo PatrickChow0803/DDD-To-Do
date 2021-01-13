@@ -21,7 +21,7 @@ class AppWidget extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         // home: SignInPage(),
         // overrides the default navigator with the ExtendedNavigator
-        builder: ExtendedNavigator.builder(
+        builder: ExtendedNavigator(
           router: AutoRoute(),
         ),
         theme: ThemeData.dark().copyWith(

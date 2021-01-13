@@ -1,0 +1,7 @@
+# For the JSON package. Makes it so that nested objects also get converted to JSON successfully
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          explicit_to_json: true

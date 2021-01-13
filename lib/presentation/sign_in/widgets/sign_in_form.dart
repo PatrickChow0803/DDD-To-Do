@@ -2,6 +2,9 @@ import 'package:ddd_to_do/application/auth/sign_in_form/sign_in_form_bloc.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:ddd_to_do/presentation/routes/router.gr.dart';
+import 'package:ddd_to_do/application/auth/auth_bloc.dart';
 
 class SignInForm extends StatelessWidget {
   @override
@@ -10,7 +13,9 @@ class SignInForm extends StatelessWidget {
       listener: (context, state) {
         // this is for displaying a snackbar when signing in with Google
         state.authFailureOrSuccessOption.fold(
+          // if state.authFailureOrSuccessOption is none, don't do anything
           () {},
+          // in the case of failure, display a Flushbar (SnackBar)
           (either) => either.fold((failure) {
             FlushbarHelper.createError(
               message: failure.map(
@@ -22,8 +27,12 @@ class SignInForm extends StatelessWidget {
               // shows the snackbar
             ).show(context);
           },
-              // navigate
-              (_) => null),
+              // if the user signed in successfully, move to notes_overview
+              (_) {
+            ExtendedNavigator.of(context).replace(Routes.notesOverviewPage);
+            // change the auth state of our app
+            context.read<AuthBloc>().add(const AuthEvent.authCheckRequested());
+          }),
         );
       },
       builder: (context, state) {
@@ -31,6 +40,7 @@ class SignInForm extends StatelessWidget {
           autovalidateMode:
               state.showErrorMessages ? AutovalidateMode.always : AutovalidateMode.disabled,
           child: ListView(
+            padding: const EdgeInsets.all(8.0),
             children: [
               const Icon(
                 Icons.sticky_note_2,
@@ -121,6 +131,11 @@ class SignInForm extends StatelessWidget {
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
+              // display a list of widgets if the statement is true
+              if (state.isSubmitting) ...[
+                const SizedBox(height: 8.0),
+                const LinearProgressIndicator(),
+              ]
             ],
           ),
         );

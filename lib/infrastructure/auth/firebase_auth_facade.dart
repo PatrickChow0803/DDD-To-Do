@@ -19,13 +19,12 @@ class FirebaseAuthFacade implements IAuthFacade {
 
   FirebaseAuthFacade(this._firebaseAuth, this._googleSignIn);
 
+  // converts the user from firebase to my own personal UniqueUser object
+  // optionOf makes it a type of Option
+  // I should remove the Future here but then I'll have to edit the interface
   @override
-  Future<Option<UniqueUser>> getSignedInUser() async {
-    final User user = _firebaseAuth.currentUser;
-    // converts the user from firebase to my own personal UniqueUser object
-    // optionOf makes it a type of Option
-    return optionOf(user?.toDomain());
-  }
+  Future<Option<UniqueUser>> getSignedInUser() async =>
+      optionOf(_firebaseAuth.currentUser?.toDomain());
 
   @override
   Future<Either<AuthFailure, Unit>> registerWithEmailAndPassword({

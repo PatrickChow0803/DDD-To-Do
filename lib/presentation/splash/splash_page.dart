@@ -11,10 +11,8 @@ class SplashPage extends StatelessWidget {
       listener: (context, state) {
         state.map(
           initial: (_) {},
-          authenticated: (_) {
-            print('I am authenticated!');
-          },
-          unauthenticated: (_) => ExtendedNavigator.of(context).push(Routes.signInPage),
+          authenticated: (_) => ExtendedNavigator.of(context).replace(Routes.notesOverviewPage),
+          unauthenticated: (_) => ExtendedNavigator.of(context).replace(Routes.signInPage),
         );
       },
       // displays the loading on start up

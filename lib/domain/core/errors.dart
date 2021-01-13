@@ -3,6 +3,8 @@
 
 import 'package:ddd_to_do/domain/core/failures.dart';
 
+class NotAuthenticatedError extends Error {}
+
 class UnexpectedValueError extends Error {
   final ValueFailure valueError;
 

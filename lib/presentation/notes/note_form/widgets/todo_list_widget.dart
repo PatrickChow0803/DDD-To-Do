@@ -1,4 +1,5 @@
 import 'package:ddd_to_do/application/notes/note_form/note_form_bloc.dart';
+import 'package:ddd_to_do/domain/notes/value_objects.dart';
 import 'package:ddd_to_do/presentation/notes/note_form/misc/todo_item_presentation_classes.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
@@ -63,15 +64,53 @@ class TodoTile extends HookWidget {
     // if the index is out of bounds, return a TodoItemPrimitive.empty()
     final todo = context.formTodos.getOrElse(index, (_) => TodoItemPrimitive.empty());
 
-    return ListTile(
-      leading: Checkbox(
-        value: todo.done,
-        onChanged: (value) {
-          context.formTodos = context.formTodos.map(
-            (listTodo) => listTodo == todo ? todo.copyWith(done: value) : listTodo,
-          );
-          context.read<NoteFormBloc>().add(NoteFormEvent.todosChanged(context.formTodos));
-        },
+    // for setting the default text of a todowidget
+    final textEditingController = useTextEditingController(text: todo.name);
+
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.white70), borderRadius: BorderRadius.circular(8)),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      child: ListTile(
+        leading: Checkbox(
+          value: todo.done,
+          onChanged: (value) {
+            context.formTodos = context.formTodos.map(
+              (listTodo) => listTodo == todo ? todo.copyWith(done: value) : listTodo,
+            );
+            context.read<NoteFormBloc>().add(NoteFormEvent.todosChanged(context.formTodos));
+          },
+        ),
+        title: TextFormField(
+          controller: textEditingController,
+          decoration: const InputDecoration(
+            hintText: 'Todo',
+            counterText: '',
+            border: InputBorder.none,
+          ),
+          maxLength: TodoName.maxLength,
+          onChanged: (value) {
+            context.formTodos = context.formTodos.map(
+              (listTodo) => listTodo == todo ? todo.copyWith(name: value) : listTodo,
+            );
+            context.read<NoteFormBloc>().add(NoteFormEvent.todosChanged(context.formTodos));
+          },
+          validator: (_) {
+            return context.read<NoteFormBloc>().state.note.todos.value.fold(
+                  // Failure stemming from the TodoList length should NOT be displayed by the individual TextFormFields
+                  (f) => null,
+                  (todoList) => todoList[index].name.value.fold(
+                        (f) => f.maybeMap(
+                          empty: (_) => 'Cannot be empty',
+                          exceedingLength: (_) => 'Too long',
+                          multiline: (_) => 'Has to be in a single line',
+                          orElse: () => null,
+                        ),
+                        (_) => null,
+                      ),
+                );
+          },
+        ),
       ),
     );
   }
